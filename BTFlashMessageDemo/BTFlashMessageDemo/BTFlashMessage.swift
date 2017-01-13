@@ -86,7 +86,10 @@ class BTFlashMessage : UIView {
         lbHeader.clipsToBounds = true
         lbMessage.clipsToBounds = true
         btClose.clipsToBounds = true
-        
+        self.addSubview(btClose)
+        self.addSubview(lbHeader)
+        self.addSubview(lbMessage)
+        lbHeader.font = UIFont.boldSystemFont(ofSize: 16)
         lbMessage.numberOfLines = 10
         btClose.setTitle("X", for: .normal)
         lbMessage.text = message
@@ -96,23 +99,21 @@ class BTFlashMessage : UIView {
 
         let leadingConstraint = NSLayoutConstraint(item: lbHeader, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 10)
         
-        let widthConstraintHeader = NSLayoutConstraint(item: lbHeader, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
-        widthConstraintHeader.priority = 1000
+        let widthConstraintHeader = NSLayoutConstraint(item: lbHeader, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 70)
+
         lbHeader.addConstraint(widthConstraintHeader)
 
-        self.addSubview(lbHeader)
         self.addConstraints([centerHorConstraint, leadingConstraint])
         
         lbMessage.translatesAutoresizingMaskIntoConstraints = false
         
         let centerHorConstraintMessage = NSLayoutConstraint(item: lbMessage, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
 
-        let leadingConstraintMessage = NSLayoutConstraint(item: lbMessage, attribute: .leading, relatedBy: .equal, toItem: lbHeader, attribute: .trailing, multiplier: 1, constant: 20)
+        let leadingConstraintMessage = NSLayoutConstraint(item: lbMessage, attribute: .leading, relatedBy: .equal, toItem: lbHeader, attribute: .trailing, multiplier: 1, constant: 10)
         
         let trailingConstraintMessage = NSLayoutConstraint(item: btClose, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: lbMessage, attribute: .trailing, multiplier: 1, constant: 5)
 
         
-        self.addSubview(lbMessage)
         
         self.addConstraints([centerHorConstraintMessage, leadingConstraintMessage, trailingConstraintMessage])
 
@@ -123,7 +124,6 @@ class BTFlashMessage : UIView {
 
         btClose.addConstraint(widthConstraintBtClose)
         
-        self.addSubview(btClose)
         self.addConstraints([topConstraintBtClose, trailingConstraintBtClose])
         
         btClose.addTarget(self, action: #selector(BTFlashMessage.actionClose(_:)), for: .touchUpInside)
@@ -139,7 +139,6 @@ class BTFlashMessage : UIView {
             self.lbHeader.textColor = BTFlashMessage.dangerColor
             self.lbMessage.textColor = BTFlashMessage.dangerColor
             self.btClose.setTitleColor(BTFlashMessage.dangerColor, for: .normal)
-            
             self.lbHeader.text = NSLocalizedString("Error!", comment: "Error!")
             break
         case .info:
@@ -157,6 +156,7 @@ class BTFlashMessage : UIView {
             self.lbMessage.textColor = BTFlashMessage.warningColor
             self.btClose.setTitleColor(BTFlashMessage.warningColor, for: .normal)
             self.lbHeader.text = NSLocalizedString("Warning!", comment: "Warning!")
+        
             break
         case .success:
             self.layer.borderColor = BTFlashMessage.successBorderColor.cgColor
